@@ -9,10 +9,12 @@ import periscope from './commands/periscope/periscope';
 import * as clusters from './commands/utils/clusters';
 import { Reporter, reporter } from './commands/utils/reporter';
 
+let useAdminCredential = false;
+
 export async function activate(context: vscode.ExtensionContext) {
     const cloudExplorer = await k8s.extension.cloudExplorer.v1;
     context.subscriptions.push(new Reporter(context));
-
+    useAdminCredential = vscode.workspace.getConfiguration().get('kubernetes.aks.useAdminCredential') as boolean;
     if (cloudExplorer.available) {
         // NOTE: This is boilerplate configuration for the Azure UI extension on which this extension relies.
         const uiExtensionVariables = {
@@ -46,7 +48,13 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 async function getClusterKubeconfig(target: AksClusterTreeItem): Promise<string | undefined> {
-    return await clusters.getKubeconfigYaml(target);
+    if (useAdminCredential)
+    {
+        return await clusters.getKubeconfigYamlAdmin(target);
+    }
+    else {
+        return await clusters.getKubeconfigYaml(target);
+    }
 }
 
 function registerCommandWithTelemetry(command: string, callback: (context: IActionContext, target: any) => any) {

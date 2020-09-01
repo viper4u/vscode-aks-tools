@@ -1,11 +1,11 @@
 {
-    "name": "vscode-aks-tools",
-    "displayName": "Azure Kubernetes Service",
+    "name": "vscode-aks-tools-fork-viper4u",
+    "displayName": "Azure Kubernetes Service (fork-viper4u)",
     "description": "Display Azure Kubernetes Services within VS Code",
-    "version": "0.0.6",
+    "version": "0.0.6-1",
     "preview": true,
     "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-    "publisher": "ms-kubernetes-tools",
+    "publisher": "ms-kubernetes-tools-fork-viper4u",
     "icon": "resources/aks-tools.png",
     "engines": {
         "vscode": "^1.33.0"
@@ -28,6 +28,16 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": {
+            "title": "AKS Cloud",
+            "properties": {
+                "kubernetes.aks.useAdminCredential": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use Admin credential."
+                }
+            }
+        },
         "commands": [
             {
                 "command": "aks.selectSubscriptions",
