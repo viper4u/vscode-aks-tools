@@ -6,6 +6,9 @@ export default class AzureAccountTreeItem extends AzureAccountTreeItemBase {
     public createSubscriptionTreeItem(root: ISubscriptionContext): SubscriptionTreeItemBase {
         return new SubscriptionTreeItem(this, root);
     }
+    public async refresh(): Promise<void> {
+        super.refresh();
+    }
 
     public async refreshImpl?(): Promise<void> {
         // NOTE: Updates to the subscription filter would normally refresh this node. However,

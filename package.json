@@ -2,10 +2,10 @@
     "name": "vscode-aks-tools-fork-viper4u",
     "displayName": "Azure Kubernetes Service (fork-viper4u)",
     "description": "Display Azure Kubernetes Services within VS Code",
-    "version": "0.0.6-1",
+    "version": "0.0.2",
     "preview": true,
     "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-    "publisher": "ms-kubernetes-tools-fork-viper4u",
+    "publisher": "Viper4u",
     "icon": "resources/aks-tools.png",
     "engines": {
         "vscode": "^1.33.0"
@@ -52,6 +52,10 @@
                 "title": "Run AKS Diagnostics"
             },
             {
+                "command": "aks.refreshSubscription",
+                "title": "Refresh Subscription"
+            },
+            {
                 "command": "aks.periscope",
                 "title": "Run AKS Periscope"
             }
@@ -72,6 +76,9 @@
                 {
                     "command": "aks.detectorDiagnostics",
                     "when": "view == kubernetes.cloudExplorer && viewItem =~ /aks\\.cluster/i"
+                },                {
+                    "command": "aks.refreshSubscription",
+                    "when": "view == kubernetes.cloudExplorer"
                 },
                 {
                     "command": "aks.periscope",

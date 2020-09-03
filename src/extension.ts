@@ -2,12 +2,12 @@ import * as vscode from 'vscode';
 import * as k8s from 'vscode-kubernetes-tools-api';
 import AksClusterTreeItem from './tree/aksClusterTreeItem';
 import AzureAccountTreeItem from './tree/azureAccountTreeItem';
-import { createTelemetryReporter, registerUIExtensionVariables, AzExtTreeDataProvider, AzureUserInput, registerCommand, IActionContext } from 'vscode-azureextensionui';
+import { createTelemetryReporter, registerUIExtensionVariables, AzExtTreeDataProvider, AzureUserInput, registerCommand } from 'vscode-azureextensionui';
 import selectSubscriptions from './commands/selectSubscriptions';
 import detectorDiagnostics from './commands/detectorDiagnostics/detectorDiagnostics';
 import periscope from './commands/periscope/periscope';
 import * as clusters from './commands/utils/clusters';
-import { Reporter, reporter } from './commands/utils/reporter';
+import { Reporter } from './commands/utils/reporter';
 
 let useAdminCredential = false;
 
@@ -29,18 +29,19 @@ export async function activate(context: vscode.ExtensionContext) {
 
         registerUIExtensionVariables(uiExtensionVariables);
 
-        registerCommandWithTelemetry('aks.selectSubscriptions', selectSubscriptions);
-        registerCommandWithTelemetry('aks.detectorDiagnostics', detectorDiagnostics);
-        registerCommandWithTelemetry('aks.periscope', periscope);
-
+        registerCommand('aks.selectSubscriptions', selectSubscriptions);
+        registerCommand('aks.detectorDiagnostics', detectorDiagnostics);
+        registerCommand('aks.periscope', periscope);
         const azureAccountTreeItem = new AzureAccountTreeItem();
         context.subscriptions.push(azureAccountTreeItem);
         const treeDataProvider = new AzExtTreeDataProvider(azureAccountTreeItem, 'azureAks.loadMore');
-
         cloudExplorer.api.registerCloudProvider({
             cloudName: 'Azure',
             treeDataProvider,
             getKubeconfigYaml: getClusterKubeconfig
+        });
+        registerCommand('aks.refreshSubscription', () => {
+            treeDataProvider.refresh();
         });
     } else {
         vscode.window.showWarningMessage(cloudExplorer.reason);
@@ -55,19 +56,4 @@ async function getClusterKubeconfig(target: AksClusterTreeItem): Promise<string 
     else {
         return await clusters.getKubeconfigYaml(target);
     }
-}
-
-function registerCommandWithTelemetry(command: string, callback: (context: IActionContext, target: any) => any) {
-    const wrappedCallback = telemetrise(command, callback);
-    return registerCommand(command, wrappedCallback);
-}
-
-function telemetrise(command: string, callback: (context: IActionContext, target: any) => any): (context: IActionContext, target: any) => any {
-    return (context, target) => {
-        if (reporter) {
-            reporter.sendTelemetryEvent("command", { command: command });
-        }
-
-        return callback(context, target);
-    };
 }
