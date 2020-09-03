@@ -130,6 +130,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Azure/vscode-aks-tools"
+        "url": "https://github.com/viper4u/vscode-aks-tools"
     }
 }
