@@ -2,7 +2,7 @@
     "name": "vscode-aks-tools-fork-viper4u",
     "displayName": "Azure Kubernetes Service (fork-viper4u)",
     "description": "Display Azure Kubernetes Services within VS Code",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "preview": true,
     "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
     "publisher": "Viper4u",
