@@ -2,7 +2,7 @@
     "name": "vscode-aks-tools-fork-viper4u",
     "displayName": "Azure Kubernetes Service (fork-viper4u)",
     "description": "Display Azure Kubernetes Services within VS Code",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "preview": true,
     "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
     "publisher": "Viper4u",
@@ -58,6 +58,16 @@
             {
                 "command": "aks.periscope",
                 "title": "Run AKS Periscope"
+            },
+            {
+                "command": "k8s.pod.container.terminal",
+                "title": "Terminal",
+                "category": "Kubernetes"
+            },
+            {
+                "command": "k8s.pod.container.file.view",
+                "title": "View file",
+                "category": "Kubernetes"
             }
         ],
         "menus": {
@@ -83,6 +93,14 @@
                 {
                     "command": "aks.periscope",
                     "when": "view == kubernetes.cloudExplorer && viewItem =~ /aks\\.cluster/i"
+                },
+                {
+                    "command": "k8s.pod.container.terminal",
+                    "when": "view == extension.vsKubernetesExplorer && viewItem =~ /containernode/i"
+                },
+                {
+                    "command": "k8s.pod.container.file.view",
+                    "when": "view == extension.vsKubernetesExplorer && viewItem =~ /containerfilenode/i"
                 }
             ]
         }

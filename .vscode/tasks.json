@@ -15,6 +15,16 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Package extension",
+            "type": "shell",
+            "command": "vsce package",
+            "group": "test",
+            "presentation": {
+              "reveal": "always",
+              "panel": "new"
+            }
         }
     ]
 }

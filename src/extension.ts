@@ -7,6 +7,7 @@ import selectSubscriptions from './commands/selectSubscriptions';
 import detectorDiagnostics from './commands/detectorDiagnostics/detectorDiagnostics';
 import periscope from './commands/periscope/periscope';
 import * as clusters from './commands/utils/clusters';
+import * as FileExplorer from './commands/fileSystem/Activator';
 
 let useAdminCredential = false;
 
@@ -41,6 +42,8 @@ export async function activate(context: vscode.ExtensionContext) {
         registerCommand('aks.refreshSubscription', () => {
             treeDataProvider.refresh();
         });
+
+        FileExplorer.activateFileExplorer(context);
     } else {
         vscode.window.showWarningMessage(cloudExplorer.reason);
     }
