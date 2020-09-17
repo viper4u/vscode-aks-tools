@@ -88,7 +88,7 @@
                     "when": "view == kubernetes.cloudExplorer && viewItem =~ /aks\\.cluster/i"
                 },                {
                     "command": "aks.refreshSubscription",
-                    "when": "view == kubernetes.cloudExplorer"
+                    "when": "viewItem == aks.subscription"
                 },
                 {
                     "command": "aks.periscope",

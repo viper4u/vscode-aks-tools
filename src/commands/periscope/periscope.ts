@@ -28,7 +28,14 @@ export default async function periscope(
         if (clusterTarget && clusterTarget.cloudName === "Azure" &&
             clusterTarget.nodeType === "resource" && clusterTarget.cloudResource.nodeType === "cluster") {
             const cluster = clusterTarget.cloudResource as AksClusterTreeItem;
-            const clusterKubeConfig = await clusters.getKubeconfigYaml(cluster);
+            let user = "";
+
+            await vscode.window.showQuickPick(["Admin", "User"], {canPickMany: false }).then( (selected: any) => {
+                if (selected) {
+                    user = selected;
+                }
+            });
+            const clusterKubeConfig = await clusters.getKubeconfigYaml(cluster, user === "Admin");
 
             if (clusterKubeConfig) {
                 await runAKSPeriscope(cluster, clusterKubeConfig);

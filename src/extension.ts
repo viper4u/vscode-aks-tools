@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as k8s from 'vscode-kubernetes-tools-api';
 import AksClusterTreeItem from './tree/aksClusterTreeItem';
 import AzureAccountTreeItem from './tree/azureAccountTreeItem';
-import { createTelemetryReporter, registerUIExtensionVariables, AzExtTreeDataProvider, AzureUserInput, registerCommand, IActionContext } from 'vscode-azureextensionui';
+import { createTelemetryReporter, registerUIExtensionVariables, AzExtTreeDataProvider, AzureUserInput, registerCommand } from 'vscode-azureextensionui';
 import selectSubscriptions from './commands/selectSubscriptions';
 import detectorDiagnostics from './commands/detectorDiagnostics/detectorDiagnostics';
 import periscope from './commands/periscope/periscope';
@@ -57,11 +57,5 @@ async function getClusterKubeconfig(target: AksClusterTreeItem): Promise<string 
             user = selected;
         }
     });
-    if (user === "Admin")
-    {
-        return await clusters.getKubeconfigYamlAdmin(target);
-    }
-    else {
-        return await clusters.getKubeconfigYaml(target);
-    }
+    return await clusters.getKubeconfigYaml(target, user === "Admin");
 }
