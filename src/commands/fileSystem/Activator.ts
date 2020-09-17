@@ -23,14 +23,6 @@ export async function activateFileExplorer(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
     disposable = vscode.commands.registerCommand('k8s.pod.container.file.cp-from', fileCpFrom);
     context.subscriptions.push(disposable);
-
-    const kubernetesContainerFileDocumentProvider = new FileNodes.KubernetesContainerFileDocumentProvider(kubectl.api);
-    disposable = vscode.workspace.registerTextDocumentContentProvider(FileNodes.KUBERNETES_FILE_VIEW, kubernetesContainerFileDocumentProvider);
-    context.subscriptions.push(disposable);
-    disposable = vscode.workspace.registerTextDocumentContentProvider(FileNodes.KUBERNETES_FOLDER_FIND, kubernetesContainerFileDocumentProvider);
-    context.subscriptions.push(disposable);
-    disposable = vscode.workspace.registerTextDocumentContentProvider(FileNodes.KUBERNETES_FOLDER_LS_AL, kubernetesContainerFileDocumentProvider);
-    context.subscriptions.push(disposable);
 }
 
 async function terminal(target?: any) {

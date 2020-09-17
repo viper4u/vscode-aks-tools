@@ -1,10 +1,6 @@
 import * as vscode from 'vscode';
 import * as k8s from 'vscode-kubernetes-tools-api';
 
-export const KUBERNETES_FILE_VIEW = 'kubernetes-file-view';
-export const KUBERNETES_FOLDER_FIND = 'kubernetes-folder-find';
-export const KUBERNETES_FOLDER_LS_AL = 'kubernetes-folder-ls-al';
-
 export class VolumeMountNode implements k8s.ClusterExplorerV1.Node {
     private volumeMount: any;
 
@@ -136,21 +132,6 @@ export class FolderNode implements k8s.ClusterExplorerV1.Node {
         treeItem.contextValue = 'containerfoldernode';
         return treeItem;
     }
-
-    async findImpl(findArgs: any) {
-        const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(`${KUBERNETES_FOLDER_FIND}:${this.podName}:${this.namespace}:${this.containerName}:${this.path}${this.name}`));
-        await vscode.window.showTextDocument(doc, { preview: false });
-    }
-
-    find() {
-        const findArgs = '';
-        this.findImpl(findArgs);
-    }
-
-    async lsDashAl() {
-        const doc = await vscode.workspace.openTextDocument(vscode.Uri.parse(`${KUBERNETES_FOLDER_LS_AL}:${this.podName}:${this.namespace}:${this.containerName}:${this.path}${this.name}`));
-        await vscode.window.showTextDocument(doc, { preview: false });
-    }
 }
 
 export class FileNode implements k8s.ClusterExplorerV1.Node {
@@ -261,39 +242,5 @@ export class FileSystemNodeContributor {
             }
         }
         return [];
-    }
-}
-
-export class KubernetesContainerFileDocumentProvider implements vscode.TextDocumentContentProvider {
-    private kubectl: k8s.KubectlV1;
-
-    constructor(kubectl: k8s.KubectlV1) {
-        this.kubectl = kubectl;
-    }
-
-    async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-        const parts = uri.path.split(':');
-
-        let command;
-        if (uri.scheme === KUBERNETES_FILE_VIEW) {
-            command = 'type';
-        } else if (uri.scheme === KUBERNETES_FOLDER_FIND) {
-            command = 'find';
-        } else if (uri.scheme === KUBERNETES_FOLDER_LS_AL) {
-            command = 'ls -al';
-        }
-        if (command) {
-            const result: k8s.KubectlV1.ShellResult | undefined = await this.kubectl.invokeCommand(`exec -it ${parts[0]}  -c ${parts[2]} --namespace ${parts[1]} -- ${command} ${parts[3]}`);
-            if (result?.code !== 0) {
-                vscode.window.showErrorMessage(`Can't get data: ${result ? result.stderr : 'unable to run cat command on file ${this.path}${this.name}'}`);
-                return `${command} ${uri.path}\n ${result?.stderr}`;
-            }
-            let output = (uri.scheme === KUBERNETES_FILE_VIEW) ? '' : `${command} ${parts[3]}\n\n`;
-            output += result.stdout;
-            if (output) {
-                return output;
-            }
-        }
-        return uri.toString();
     }
 }
