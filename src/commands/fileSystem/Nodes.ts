@@ -176,6 +176,16 @@ export class FileNode implements k8s.ClusterExplorerV1.Node {
         await this.readFile();
     }
 
+    async deleteFile() {
+        const kubectl = await k8s.extension.kubectl.v1;
+        if (kubectl.available) {
+            const shell: k8s.KubectlV1.ShellResult | undefined = await kubectl.api.invokeCommand(`exec -it --namespace ${this.namespace} -c ${this.containerName} ${this.podName} -- powershell -C del ${this.path}${this.name}`);
+            if (shell?.code !== 0) {
+                vscode.window.showErrorMessage(`Can't remove data: ${shell ? shell.stderr : 'unable to remove file ${this.path}${this.name}'}`);
+            }
+        }
+    }
+
     async readFile() {
         const kubectl = await k8s.extension.kubectl.v1;
         let text: string | undefined = '';

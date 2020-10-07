@@ -21,6 +21,8 @@ export async function activateFileExplorer(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
     disposable = vscode.commands.registerCommand('k8s.pod.container.file.view', viewFile);
     context.subscriptions.push(disposable);
+    disposable = vscode.commands.registerCommand('k8s.pod.container.file.delete', deleteFile);
+    context.subscriptions.push(disposable);
     disposable = vscode.commands.registerCommand('k8s.pod.container.file.cp-from', fileCpFrom);
     context.subscriptions.push(disposable);
 }
@@ -37,6 +39,17 @@ async function terminal(target?: any) {
 }
 
 async function viewFile(target?: any) {
+    if (target && target.nodeType === 'extension') {
+        if (target.impl instanceof FileNodes.FileNode) {
+            if ((target.impl as FileNodes.FileNode).isFile()) {
+                (target.impl as FileNodes.FileNode).viewFile();
+                return;
+            }
+        }
+    }
+}
+
+async function deleteFile(target?: any) {
     if (target && target.nodeType === 'extension') {
         if (target.impl instanceof FileNodes.FileNode) {
             if ((target.impl as FileNodes.FileNode).isFile()) {

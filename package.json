@@ -1,8 +1,8 @@
 {
     "name": "vscode-aks-tools-fork-viper4u",
-    "displayName": "Azure Kubernetes Service (fork-viper4u)",
-    "description": "Display Azure Kubernetes Services within VS Code",
-    "version": "0.0.4",
+    "displayName": "Viper4u aks fork",
+    "description": "Display AKS within VS Code",
+    "version": "0.0.6",
     "preview": true,
     "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
     "publisher": "Viper4u",
@@ -11,15 +11,9 @@
         "vscode": "^1.33.0"
     },
     "license": "MIT",
-    "categories": [
-        "Azure"
-    ],
+    "categories": [],
     "keywords": [
-        "kubernetes",
-        "azure",
-        "aks",
-        "acs",
-        "kubernetes-extension-cloud-provider"
+        "vsaks"
     ],
     "activationEvents": [
         "onView:kubernetes.cloudExplorer",
@@ -28,16 +22,6 @@
     ],
     "main": "./out/extension",
     "contributes": {
-        "configuration": {
-            "title": "AKS Cloud",
-            "properties": {
-                "kubernetes.aks.useAdminCredential": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Use Admin credential."
-                }
-            }
-        },
         "commands": [
             {
                 "command": "aks.selectSubscriptions",
@@ -48,16 +32,8 @@
                 }
             },
             {
-                "command": "aks.detectorDiagnostics",
-                "title": "Run AKS Diagnostics"
-            },
-            {
                 "command": "aks.refreshSubscription",
                 "title": "Refresh Subscription"
-            },
-            {
-                "command": "aks.periscope",
-                "title": "Run AKS Periscope"
             },
             {
                 "command": "k8s.pod.container.terminal",
@@ -67,6 +43,11 @@
             {
                 "command": "k8s.pod.container.file.view",
                 "title": "View file",
+                "category": "Kubernetes"
+            },
+            {
+                "command": "k8s.pod.container.file.delete",
+                "title": "Delete file",
                 "category": "Kubernetes"
             }
         ],
@@ -84,15 +65,8 @@
                     "group": "inline"
                 },
                 {
-                    "command": "aks.detectorDiagnostics",
-                    "when": "view == kubernetes.cloudExplorer && viewItem =~ /aks\\.cluster/i"
-                },                {
                     "command": "aks.refreshSubscription",
                     "when": "viewItem == aks.subscription"
-                },
-                {
-                    "command": "aks.periscope",
-                    "when": "view == kubernetes.cloudExplorer && viewItem =~ /aks\\.cluster/i"
                 },
                 {
                     "command": "k8s.pod.container.terminal",
@@ -100,6 +74,10 @@
                 },
                 {
                     "command": "k8s.pod.container.file.view",
+                    "when": "view == extension.vsKubernetesExplorer && viewItem =~ /containerfilenode/i"
+                },
+                {
+                    "command": "k8s.pod.container.file.delete",
                     "when": "view == extension.vsKubernetesExplorer && viewItem =~ /containerfilenode/i"
                 }
             ]

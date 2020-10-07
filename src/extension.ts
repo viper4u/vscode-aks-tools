@@ -9,11 +9,8 @@ import periscope from './commands/periscope/periscope';
 import * as clusters from './commands/utils/clusters';
 import * as FileExplorer from './commands/fileSystem/Activator';
 
-let useAdminCredential = false;
-
 export async function activate(context: vscode.ExtensionContext) {
     const cloudExplorer = await k8s.extension.cloudExplorer.v1;
-    useAdminCredential = vscode.workspace.getConfiguration().get('kubernetes.aks.useAdminCredential') as boolean;
     if (cloudExplorer.available) {
         // NOTE: This is boilerplate configuration for the Azure UI extension on which this extension relies.
         const uiExtensionVariables = {
